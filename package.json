@@ -2,6 +2,12 @@
   "name": "green-cli",
   "version": "0.1.0",
   "description": "create a vue single-page or a vue multi-page project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JackFGreen/green-cli.git"
+  },
+  "author": "Jack Green",
+  "license": "MIT",
   "bin": {
     "green": "bin/green.js",
     "green-init": "bin/green-init.js"

@@ -1,29 +1,65 @@
 #!/usr/bin/env node
-
+var path = require('path')
 var program = require('commander')
 var shell = require('shelljs')
 
 program
-    .usage('<options>')
-    .option('-m, --multi [name]', 'create a vue multi-page project with a project [name]', 'green')
-    .option('-s, --single [name]', 'create a vue single-page project with a project [name]', 'green')
-    .description('the default type is multi, the default name is green')
+    .usage('<options> [project name]')
+    .option('-m, --multi', 'create a vue multi-page project')
+    .option('-s, --single', 'create a vue single-page project')
     .parse(process.argv)
 
 
-// program.parse(process.argv)
-// console.log(program.args)
-
-// if (program.args.length < 1) program.help()
-
-
+/**
+ * choose type
+ */
 if (program.multi) {
-    console.log('multi')
-    console.log(program.multi)
+    log('type: multi')
 } else if (program.single) {
-    console.log('single')
-    console.log(program.multi)
+    log('type: single')
 } else {
-    console.log('please choose a project to init')
+    warning('choose a type to init')
+    program.help()
 }
 
+
+/**
+ * project name
+ */
+if (program.args.length < 1) {
+    warning('enter a project name')
+    program.help()
+}
+
+var projectName = program.args[0]
+log('name: ' + projectName)
+
+create()
+
+
+/**
+ * create project
+ */
+function create() {
+    log('create ' + projectName + ' to ' + pwd())
+    log('path is ' + pwd(projectName))
+
+    shell.mkdir(pwd(projectName))
+}
+
+/**
+ * pwd
+ */
+function pwd(name) {
+    return path.join(shell.pwd().toString(), name || '')
+}
+
+/**
+ * log
+ */
+function log(s) {
+    console.log('\n====================\n' + s + '\n====================\n')
+}
+function warning(s) {
+    console.log('\n==================== ' + s + ' ====================\n')
+}
