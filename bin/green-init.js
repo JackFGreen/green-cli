@@ -3,90 +3,57 @@
 var path = require('path')
 var program = require('commander')
 var shell = require('shelljs')
+var repos = require('../lib/repos')
 
 program
-    .usage('<options> [project name]')
-    .option('-m, --multi', 'create a vue multi-page project')
-    .option('-s, --single', 'create a vue single-page project')
+    .usage('<template-name> [project name]')
     .parse(process.argv)
 
+program.on('--help', () => {
+    console.log('  Examples:')
+    console.log('')
+    console.log('    $ green init vue-multi my-project')
+    console.log('')
+})
 
-var repo = {
-    'multi': {
-        name: 'vue-multi/',
-        url: 'git@github.com:JackFGreen/vue-multi.git'
-    },
-    'single': {
-        name: 'vue-single/',
-        url: 'git@github.com:JackFGreen/vue-single.git'
-    }
-}
-
-/**
- * choose type
- */
-if (program.multi) {
-    log('type: multi')
-    var type = 'multi'
-} else if (program.single) {
-    log('type: single')
-    var type = 'single'
-} else {
-    warning('choose a type to init')
+if (program.args.length < 2) {
     program.help()
 }
-
-
-/**
- * project name
- */
-if (program.args.length < 1) {
-    warning('enter a project name')
-    program.help()
-}
-
-var projectName = program.args[0]
-log('name: ' + projectName)
-
-create()
 
 
 /**
  * create project
  */
-function create() {
-    var dir = pwd(projectName)
-    var source = pwd(repo[type].name)
+var tplName = program.args[0]
+var projectName = program.args[1]
+var dir = pwd(projectName)
 
-    log('create ' + projectName + ' to ' + pwd())
-    log('path is ' + dir)
+console.log('template: ' + tplName)
+console.log('project: ' + projectName)
+console.log('target: ' + dir)
 
-    shell.mkdir(dir)
+repos((info)=>{
+    var source = ''
 
-    log('download ' + repo[type].name + ' from ' + repo[type].url)
-    shell.exec('git clone ' + repo[type].url)
+    info.forEach(function(r) {
+        r.name == tplName && (source = r.ssh_url)
+    }, this);
 
-    log('copy ' + repo[type].name + ' to ' + projectName)
-    shell.cp('-rf', source + '/*', dir)
-
-    log('rm ' + repo[type].name)
-    shell.rm('-rf', source)
-}
+    if (source) {
+        console.log('source: ' + source)
+        shell.exec('git clone ' + source + ' ' + dir)
+        shell.rm('-rf', pwd(dir, '.git'))
+    } else {
+        console.log('')
+        console.log('repository %s does not exist', tplName)
+        console.log('')
+    }
+})
 
 /**
  * pwd
+ * @return current path
  */
-function pwd(name) {
-    return path.join(shell.pwd().toString(), name || '')
-}
-
-/**
- * log
- */
-function log(s) {
-    console.log('\n====================\n' + s + '\n====================\n')
-}
-
-function warning(s) {
-    console.log('\n==================== ' + s + ' ====================\n')
+function pwd(...name) {
+    return path.resolve(process.cwd(), ...name || '')
 }

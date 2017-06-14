@@ -1,14 +1,16 @@
 {
   "name": "green-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "create a vue single-page or a vue multi-page project",
   "main": "index.js",
   "bin": {
     "green": "bin/green.js",
-    "green-init": "bin/green-init.js"
+    "green-init": "bin/green-init.js",
+    "green-list": "bin/green-list.js"
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "request": "^2.81.0",
     "shelljs": "^0.7.8"
   },
   "devDependencies": {
