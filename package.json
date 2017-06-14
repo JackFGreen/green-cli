@@ -2,18 +2,10 @@
   "name": "green-cli",
   "version": "0.1.0",
   "description": "create a vue single-page or a vue multi-page project",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JackFGreen/green-cli.git"
-  },
-  "author": "Jack Green",
-  "license": "MIT",
+  "main": "index.js",
   "bin": {
     "green": "bin/green.js",
     "green-init": "bin/green-init.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "commander": "^2.9.0",
@@ -26,5 +18,22 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-runtime": "^6.23.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JackFGreen/green-cli.git"
+  },
+  "keywords": [
+    "vue",
+    "cli"
+  ],
+  "author": "Jack Green",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JackFGreen/green-cli/issues"
+  },
+  "homepage": "https://github.com/JackFGreen/green-cli#readme"
 }
