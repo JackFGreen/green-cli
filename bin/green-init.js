@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 var path = require('path')
 var program = require('commander')
 var shell = require('shelljs')
@@ -10,13 +11,26 @@ program
     .parse(process.argv)
 
 
+var repo = {
+    'multi': {
+        name: 'vue-multi/',
+        url: 'git@github.com:JackFGreen/vue-multi.git'
+    },
+    'single': {
+        name: 'vue-single/',
+        url: 'git@github.com:JackFGreen/vue-single.git'
+    }
+}
+
 /**
  * choose type
  */
 if (program.multi) {
     log('type: multi')
+    var type = 'multi'
 } else if (program.single) {
     log('type: single')
+    var type = 'single'
 } else {
     warning('choose a type to init')
     program.help()
@@ -41,10 +55,22 @@ create()
  * create project
  */
 function create() {
-    log('create ' + projectName + ' to ' + pwd())
-    log('path is ' + pwd(projectName))
+    var dir = pwd(projectName)
+    var source = pwd(repo[type].name)
 
-    shell.mkdir(pwd(projectName))
+    log('create ' + projectName + ' to ' + pwd())
+    log('path is ' + dir)
+
+    shell.mkdir(dir)
+
+    log('download ' + repo[type].name + ' from ' + repo[type].url)
+    shell.exec('git clone ' + repo[type].url)
+
+    log('copy ' + repo[type].name + ' to ' + projectName)
+    shell.cp('-rf', source + '/*', dir)
+
+    log('rm ' + repo[type].name)
+    shell.rm('-rf', source)
 }
 
 /**
@@ -60,6 +86,7 @@ function pwd(name) {
 function log(s) {
     console.log('\n====================\n' + s + '\n====================\n')
 }
+
 function warning(s) {
     console.log('\n==================== ' + s + ' ====================\n')
 }
