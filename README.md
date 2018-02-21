@@ -17,4 +17,5 @@ $ green init template-name project-name
 ```
 
 ## 开发文档
-[vue-multi](https://github.com/green-templates/vue-multi#readme)
+[vue-single](https://github.com/green-templates/vue-single#readme)  
+[vue-multi](https://github.com/green-templates/vue-multi#readme)  
